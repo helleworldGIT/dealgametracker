@@ -21,10 +21,12 @@ Vue.use(VueRouter)
   {
     path: '/game/:id',
     name: 'Game',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/GameInfo.vue')
+    component: () => import('../views/GameInfo.vue')
+  },
+  {
+    path: '/stores',
+    name: 'Stores',
+    component: () => import('../views/Stores.vue')
   }
 ]
 

@@ -1,12 +1,17 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">Search games
+      <router-link :to="{name: 'Home'}">Search games
         <span>
           🎮
         </span>
       </router-link>
-      <router-link to="/about">About this project
+      <router-link :to="{name: 'Stores'}">Stores
+        <span>
+          🏢
+        </span>
+      </router-link>
+      <router-link :to="{name: 'About'}">About this
         <span>
           ❓
         </span>
@@ -28,10 +33,12 @@ import footercustom from '@/components/FooterCustom.vue'
 </script>
 
 <style lang="scss">
+@import "css/responsive";
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap');
 
 html {
   background: #1b262c;
+  scroll-behavior: smooth;
 }
 
 * {
@@ -49,6 +56,10 @@ html {
 
 #nav {
   padding: 1rem;
+  @include xs-screen {
+    padding: 0.3rem;
+    font-size: 0.8rem;
+  }
   span {
     display: none;
   }
@@ -58,6 +69,9 @@ html {
     color: #0f4c75;
     padding: 0.667rem;
     text-decoration: none;
+    @include xs-screen {
+      padding: 0.367rem;
+    }
 
     &.router-link-exact-active {
       color: #00b7c2;

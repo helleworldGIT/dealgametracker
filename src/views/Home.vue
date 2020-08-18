@@ -1,27 +1,34 @@
 <template>
   <div>
     <vue-headful
-        title="Sale game garden | Home"
-        description="Sale game garden | A side-project. You can search best and cheap game deals here."
+        title="Dealing garden | Home"
+        description="Dealing garden | A side-project. You can search best and cheap game deals here."
     />
     <h1>
-      Sale game garden🌱
+      Dealing garden🌱
     </h1>
     <div v-show="intro" class="intro">
+    <p>
+      🔸
+    </p>
       <p>
-        Hey there! 👋
-      </p>
-      <p>
-        Looking for the <b>cheapest deals</b> in PC games?
-      </p>
-      <p>
-        Try searching your game here! 👇
+        Looking for the <b>cheapest deals</b> in PC games? 👇
       </p>
     </div>
     <!-- BUSCADOR -->
     <div class="buscador">
-      <input v-on:keyup.enter="searchGame()" id="search" placeholder="Search a game by name🔮" v-model="search">
-      <input v-on:keyup.enter="searchGame()" id="price" placeholder="Minimum price (optional)💲" v-model="price">
+      <div class="searching">
+        <label for="gameName">
+          Game name
+        </label>
+        <input name="gameName" v-on:keyup.enter="searchGame()" id="search" placeholder="Search a game by name🔮" v-model="search">
+      </div>
+      <div class="searching">
+        <label for="minPrice">
+          Minimum price (optional)
+        </label>
+        <input name="minPrice" v-on:keyup.enter="searchGame()" id="price" placeholder="Minimum price (optional)💲" v-model="price">
+      </div>
       <button @click="searchGame()">
         Search
       </button>
@@ -43,6 +50,11 @@
     <!-- JUEGOS RESULTADOS DE LA BÚSQUEDA -->
     <gamescard :games="games" :showData="showData"></gamescard>
     <!-- /JUEGOS RESULTADOS DE LA BÚSQUEDA -->
+    <!-- BOTÓN DE UP -->
+    <button @click="scrollTop()" v-show="topBtn" id="upBtn">
+      Go top
+    </button>
+    <!-- /BOTÓN DE UP -->
   </div>
 </template>
 
@@ -68,12 +80,15 @@ export default {
       lastSearch: '',
       lastPrice: null,
       latest: false,
+      newPrice: null,
+      newSearch: '',
       // VARIABLE PARA CONTROLAR LA VISIBILIDAD DEL SPINNER,
       showData: false,
       seeSpinner: false,
       errorMsg: false,
       intro: true,
-      baseURL: 'https://www.cheapshark.com/api/1.0/deals'
+      baseURL: 'https://www.cheapshark.com/api/1.0/deals',
+      topBtn: false
     }
   },
   methods: {
@@ -81,7 +96,7 @@ export default {
     async searchByName(){
       this.assignData()
         try {
-          const response = await axios.get(`${this.baseURL}?title=${newSearch}`)
+          const response = await axios.get(`${this.baseURL}?title=${this.newSearch}`)
           // GUARDO LOS RESULTADOS DE LA BÚSQUEDA EN EL ARRAY 'GAMES' DEL DATA
           this.games = response.data
         } catch(err) {
@@ -93,7 +108,7 @@ export default {
     async searchByNameAndPrice(){
       this.assignData()
         try {
-          const response = await axios.get(`${this.baseURL}?title=${newSearch}&upperPrice=${newPrice}`)
+          const response = await axios.get(`${this.baseURL}?title=${this.newSearch}&upperPrice=${this.newPrice}`)
           // GUARDO LOS RESULTADOS DE LA BÚSQUEDA EN EL ARRAY 'GAMES' DEL DATA
           this.games = response.data
         } catch(err) {
@@ -101,9 +116,15 @@ export default {
         }
         this.validatingData()
     },
+    scrollTop(){
+      window.scrollTo(0,0);
+    },
     async assignData(){
-      let newPrice = this.price
-      let newSearch = this.search
+      if(this.topBtn === false) {
+        this.topBtn = true
+      }
+      this.newPrice = this.price
+      this.newSearch = this.search
       this.latest = true
       this.lastSearch = this.search
       this.lastPrice = this.price
@@ -146,6 +167,24 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "../css/responsive";
+
+.searching {
+  display: inline-block;
+  margin-top: 0.8rem;
+  label {
+    display: block;
+    color: #fdcb9e;
+  }
+}
+
+#upBtn {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  margin: 1.2rem;
+  margin-bottom: 3rem;
+}
 
 .latest {
   color: #318fb5;
@@ -153,6 +192,12 @@ export default {
 
 .intro {
   color: #519872;
+}
+
+h1 {
+  @include xs-screen {
+    font-size: 1.5rem;
+  }
 }
 
 input, h1 {
@@ -168,6 +213,10 @@ input {
   transition: .2s;
   padding: 0.667rem;
   width: auto;
+  @include xs-screen {
+    display: block;
+    margin: auto;
+  }
   &:hover{
     border-top:  2px solid #00b7c2;
     border-right:  2px solid #00b7c2;
@@ -186,6 +235,11 @@ button {
   width: 80px;
   margin-left: 10px;
   transition: .2s;
+  @include xs-screen {
+    display: block;
+    margin: auto;
+    margin-top: 1rem;
+  }
   &:hover {
     background: #fdcb9e;
     cursor: pointer;

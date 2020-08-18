@@ -36,7 +36,7 @@
                             {{game.steamRatingText}}
                         </p>
                     </div>
-                    <img :src="game.thumb">
+                    <img alt="Game cover image" title="Game cover image" :src="game.thumb">
                 </div>
                 <router-link :to="{ name:'Game', params: {id: game.gameID}}">
                     <button>
@@ -60,6 +60,7 @@
 </script>
 
 <style lang="scss" scoped>
+@import "../css/responsive";
 
     .game_title_appear {
         color: #f7f7f7;
@@ -100,6 +101,9 @@
         background: #3b2e5a;
         border-radius: 10px;
         transition: all .2s;
+        @include xs-screen {
+            width: 270px;
+        }
         &:hover {
             transform: translateY(-5px);
             background: #00005c;

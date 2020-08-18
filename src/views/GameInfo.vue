@@ -1,14 +1,25 @@
 <template>
   <div class="about">
-    <h1>This is an about page</h1>
-    <p v-if="game">
-      nombre: {{gameName}}
+    <h1 v-if="game">{{gameName}}</h1>
+    <img alt="Game cover image" title="Game cover image" :src="gameImage">
+    <p>
+      <b>Cheapest price ever:</b>
+      💰{{gameCheapestPrice}}€
     </p>
-    <img :src="gameImage">
+    <p>
+      🔻
+    </p>
+    <h3>
+      Deals🔥:
+    </h3>
     <div class="offers" v-for="offer in offers" :key="offer.id">
-      <a :href="offerLink+offer.dealID">A ver</a> <p>
-        precio: {{offer.price}}
+      <h3>
+        Deal price:
+      </h3>
+      <p>
+         💰{{offer.price}}€
       </p>
+      <a :href="offerLink+offer.dealID">CHECK THIS DEAL</a> 
     </div>
   </div>
 </template>
@@ -41,6 +52,7 @@ export default {
     async getGameByID(){
       try {
         const response = await axios.get(`https://www.cheapshark.com/api/1.0/games?id=${this.gameId}`);
+        console.log(response)
         this.game = response.data
         this.offers = this.game.deals
         // LLAMANDO A LA FUNCIÓN QUE RECOGE LA IMAGEN DEL JUEGO
@@ -63,6 +75,10 @@ export default {
     // COMPROBANDO SI HA LLEGADO LA INFO DEL JUEGO PARA PINTAR LA INFORMACIÓN O NO
     gameName() {
       return this.game.info ? this.game.info.title : '';
+    },
+    // COMPROBANDO SI HA LLEGADO LA INFO DEL JUEGO PARA PINTAR LA INFORMACIÓN O NO
+    gameCheapestPrice() {
+      return this.game.cheapestPriceEver ? this.game.cheapestPriceEver.price : '';
     }
   },
   created(){
@@ -70,3 +86,38 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+@import "../css/responsive";
+
+.offers {
+  display: inline-block;
+  width: 220px;
+  background: #3b2e5a;
+  margin: 1rem;
+  border-radius: 10px;
+  box-sizing: border-box;
+  a {
+    display: block;
+    width: 100%;
+    background: #251f44;
+    text-decoration: none;
+    font-size: 1rem;
+    color: #e8505b;
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem;
+    &:hover {
+      background: #6a2c70;
+    }
+  }
+}
+
+h1, h3, p {
+  color: #fdcb9e;
+}
+
+img {
+  width: auto;
+}
+
+</style>
