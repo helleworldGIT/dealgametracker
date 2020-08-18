@@ -6,7 +6,7 @@
       <p class="info_points">
           🔴 Red points mean the store is <b>not active</b> right now,
           <br>
-          🟢 green points mean they're <b>active</b>.
+          🟩 green squares mean they're <b>active</b>.
       </p>
       <ul>
           <li v-for="store in stores" :key="store.id">
@@ -15,7 +15,7 @@
                   🔴
               </p>
               <p :class="{hide: store.isActive === 0, show: store.isActive === 1}">
-                  🟢
+                  🟩
               </p>
                   {{store.storeName}}
               </h2>
