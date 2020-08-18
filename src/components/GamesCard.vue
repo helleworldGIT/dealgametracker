@@ -147,9 +147,17 @@
             font-weight: bold;
             color: #e7dfd5;
             display: block;
+            margin-left: 10px;
+            @include xs-screen {
+                font-size: 0.8rem;
+            }
         }
         p {
             color: #bbe1fa;
+            margin-left: 10px;
+            @include xs-screen {
+                font-size: 0.8rem;
+            }
         }
     }
 
